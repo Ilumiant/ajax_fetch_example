@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suma</title>
+</head>
+<body>
+  <form>
+    <label for="numero1">Numero 1:</label>
+    <input type="text" id="numero1" name="numero1">
+    <br />
+    <label for="numero1">Numero 2:</label>
+    <input type="text" id="numero2" name="numero2">
+    <br />
+    <button type="button" id="sumar">Sumar</button>
+    <div>Resultado: <span id="resultado"></span></div>
+  </form>
+  <script>
+    document.getElementById("sumar").addEventListener("click", function (event) {
+      let numero1 = document.getElementById("numero1").value || 0
+      let numero2 = document.getElementById("numero2").value || 0
+
+      let formData = new FormData();
+      formData.append("numero1", numero1)
+      formData.append("numero2", numero2)
+      
+      // XMLHttpRequest
+      /*
+      var req = new XMLHttpRequest();
+      req.addEventListener("load", function () {
+        let respuesta = JSON.parse(this.responseText)
+        document.getElementById("resultado").innerHTML = respuesta.resultado
+      });
+      req.open("POST", "http://ajax.test/suma.php");
+      req.send(formData);
+      */
+
+      // Fetch
+      fetch('http://ajax.test/suma.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          let respuesta = data
+          document.getElementById("resultado").innerHTML = respuesta.resultado
+        });
+    })
+  </script>
+</body>
+</html>
